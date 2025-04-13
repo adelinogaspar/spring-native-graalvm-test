@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>spring-boot-native-hello</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Spring Boot Native Hello</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <java.version>21</java.version>
+    <spring-boot.version>3.2.4</spring-boot.version>
+    <native-build-tools.version>0.9.24</native-build-tools.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.5.18</version> <!-- Use your Spring Boot's compatible version -->
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <configuration>
+          <image>
+            <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+            <env>
+              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+              <BPE_APPEND_JAVA_TOOL_OPTIONS>-Ddebug</BPE_APPEND_JAVA_TOOL_OPTIONS>
+              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                --verbose
+                -H:+ReportExceptionStackTraces
+                --no-fallback
+                -H:+AddAllCharsets
+                -H:EnableURLProtocols=http,https
+                -H:IncludeResources='(META-INF/.*|log4j2.xml)'
+                -J-Dlog4j2.disable.jmx=true
+                --trace-class-initialization=ch.qos.logback.core.status.InfoStatus
+                --initialize-at-run-time=ch.qos.logback.core.status.InfoStatus
+              </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+            </env>
+          </image>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
