@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <java.version>21</java.version>
+    <java.version>17</java.version>
     <spring-boot.version>3.2.4</spring-boot.version>
     <native-build-tools.version>0.9.24</native-build-tools.version>
   </properties>
@@ -40,8 +40,13 @@
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.14</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>1.5.18</version> <!-- Use your Spring Boot's compatible version -->
+      <version>1.4.14</version>
     </dependency>
   </dependencies>
 
@@ -68,10 +73,20 @@
                 -J-Dlog4j2.disable.jmx=true
                 --trace-class-initialization=ch.qos.logback.core.status.InfoStatus
                 --initialize-at-run-time=ch.qos.logback.core.status.InfoStatus
+                -H:IncludeResources=org/springframework/boot/context/ConfigurationWarningsApplicationContextInitializer
               </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
             </env>
           </image>
         </configuration>
+        <executions>
+          <!-- Enable Spring AOT processing -->
+          <execution>
+            <id>process-aot</id>
+            <goals>
+              <goal>process-aot</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
