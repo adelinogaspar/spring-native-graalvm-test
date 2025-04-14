@@ -63,17 +63,25 @@
             <env>
               <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
               <BPE_APPEND_JAVA_TOOL_OPTIONS>-Ddebug</BPE_APPEND_JAVA_TOOL_OPTIONS>
-              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-                --verbose
+<!--              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                &#45;&#45;verbose
                 -H:+ReportExceptionStackTraces
-                --no-fallback
+                &#45;&#45;no-fallback
                 -H:+AddAllCharsets
                 -H:EnableURLProtocols=http,https
-                -H:IncludeResources='(META-INF/.*|log4j2.xml)'
+                -H:IncludeResources='(META-INF/.*|logback.xml)'
                 -J-Dlog4j2.disable.jmx=true
-                --trace-class-initialization=ch.qos.logback.core.status.InfoStatus
-                --initialize-at-run-time=ch.qos.logback.core.status.InfoStatus
+                &#45;&#45;trace-class-initialization=ch.qos.logback.core.status.InfoStatus
+                &#45;&#45;initialize-at-run-time=ch.qos.logback.core.status.InfoStatus
                 -H:IncludeResources=org/springframework/boot/context/ConfigurationWarningsApplicationContextInitializer
+              </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-->
+              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                --no-fallback
+                -H:+ReportExceptionStackTraces
+                -H:IncludeResources='(META-INF/.*|logback.xml)'
+                --initialize-at-run-time=ch.qos.logback.classic.pattern.*
+                --trace-class-initialization=ch.qos.logback.classic.pattern.DateConverter
+                -H:+AddAllCharsets
               </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
             </env>
           </image>
