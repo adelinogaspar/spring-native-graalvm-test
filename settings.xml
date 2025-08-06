@@ -1,0 +1,12 @@
+<proxies>
+  <proxy>
+    <id>example-proxy</id>
+    <active>true</active>
+    <protocol>http</protocol>
+    <host>192.168.1.112</host>
+    <port>3128</port>
+    <username>gaspar_proxy</username>
+    <password>senha_proxy</password>
+    <nonProxyHosts>localhost|127.0.0.*</nonProxyHosts>
+  </proxy>
+</proxies>
